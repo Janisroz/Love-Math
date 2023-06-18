@@ -30,7 +30,10 @@ function runGame(gameType) {
     let num2 = Math.floor(Math.random() * 25) + 1;
     if (gameType === "addition") {
         displayAdditionQuestion(num1, num2);
-    } else {
+    } else if (gameType === "multiply") {
+        displayMultiplyQuestion(num1, num2);
+    }
+    else {
         alert(`Unknown game type: ${gameType}`);
         throw `Unknown game type: ${gameType}. Aborting`;
     }
@@ -48,8 +51,10 @@ function checkAnswer() {
 
     if (isCorrect) {
         alert("Hey! You got it right! :D");
+        incrementScore();
     } else {
         alert(`Awww.. You answered ${userAnswer}. The correct answer was ${calculatedAnswer[0]}`);
+        incrementWrongAnswer();
     }
 
     runGame(calculatedAnswer[1]);
@@ -67,14 +72,28 @@ function calculateCorrectAnswer() {
 
     if (operator === "+") {
         return [operand1 + operand2, "addition"];
+    } else if (operator === "x") {
+        return [operand1 * operand2, "multiply"];
     } else {
         alert(`Unimplemented Operator ${operator}`);
         throw `Unimplemented Operator ${operator}. Aborting`;
     }
 }
 
+/**
+ * Gets the curremt score from the DOM and increments by one
+ */
 function incrementScore() {
+    let oldScore = parseInt(document.getElementById("score").innerText);
+    document.getElementById("score").innerText = ++oldScore;
+}
 
+/**
+ * Gets the curremt tally of incorrect answers from the DOM and increments by one
+ */
+function incrementWrongAnswer() {
+    let oldScore = parseInt(document.getElementById("incorrect").innerText);
+    document.getElementById("incorrect").innerText = ++oldScore;
 }
 
 function displayAdditionQuestion(operand1, operand2) {
@@ -88,7 +107,8 @@ function displaySubtractQuestion() {
 
 }
 
-function displayMultiplyQuestion() {
-
+function displayMultiplyQuestion(operand1, operand2) {
+    document.getElementById('operand1').innerHTML = operand1;
+    document.getElementById('operand2').innerHTML = operand2;
+    document.getElementById('operator').textContent = "x";
 }
-
